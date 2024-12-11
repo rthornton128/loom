@@ -11,8 +11,8 @@ type Route struct {
 	Path    *regexp.Regexp
 }
 
-func (r *Route) Match(path string) bool {
-	return r.Path.MatchString(path)
+func (r *Route) Match(request *http.Request) bool {
+	return r.Method == request.Method && r.Path.MatchString(request.URL.Path)
 }
 
 func (r *Route) With(h http.HandlerFunc) *Route {

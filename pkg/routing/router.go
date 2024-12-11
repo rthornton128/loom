@@ -35,9 +35,26 @@ func (r *Router) Post(path string) *Route {
 func (r *Router) Method(method, path string) *Route {
 	route := &Route{
 		Method: method,
-		Path:   regexp.MustCompile(path),
+		Path:   path_to_regex(path),
 	}
 
 	r.routes = append(r.routes, route)
 	return route
+}
+
+func (r *Router) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	for _, route := range r.routes {
+		if route.Match(request) {
+			route.Handler(writer, request)
+			return
+		}
+	}
+
+	http.NotFound(writer, request)
+}
+
+var keyMatcher = regexp.MustCompile(`:(\w+)`)
+
+func path_to_regex(path string) *regexp.Regexp {
+	return regexp.MustCompile(keyMatcher.ReplaceAllString(path, `(?<$1>\w+)`))
 }

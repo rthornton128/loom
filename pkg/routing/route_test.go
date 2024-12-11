@@ -12,14 +12,17 @@ import (
 func TestRouteMatch(t *testing.T) {
 	path := "/a/b"
 	route := &routing.Route{
-		Path: regexp.MustCompile(path),
+		Method: http.MethodGet,
+		Path:   regexp.MustCompile(path),
 	}
 
-	if !route.Match("/a/b") {
+	request := httptest.NewRequest(http.MethodGet, "/a/b", nil)
+	if !route.Match(request) {
 		t.Error("expected path to match route")
 	}
 
-	if route.Match("/z") {
+	request = httptest.NewRequest(http.MethodGet, "/z", nil)
+	if route.Match(request) {
 		t.Error("expected path not to match route")
 	}
 }

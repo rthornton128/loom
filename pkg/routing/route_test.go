@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/rthornton128/loom/framework/routing"
+	"github.com/rthornton128/loom/pkg/routing"
 )
 
 func TestRouteMatch(t *testing.T) {

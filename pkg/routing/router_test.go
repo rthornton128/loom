@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/rthornton128/loom/framework/routing"
+	"github.com/rthornton128/loom/pkg/routing"
 )
 
 func TestRouter(t *testing.T) {
